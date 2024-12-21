@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@supabase/supabase-js": "^2.47.10",
+    "axios": "^1.7.9",
+    "react-dropzone": "^14.3.5",
+    "use-dark-mode": "^2.3.1"
+  }
+}
