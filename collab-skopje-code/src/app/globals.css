@@ -19,3 +19,11 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+html {
+  @apply bg-white text-black
+}
+
+html.dark {
+  @apply bg-gray-900 text-white
+}

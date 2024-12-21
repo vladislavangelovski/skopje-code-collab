@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 
 const LinkManager = ({ links, addLink }) => {
@@ -22,14 +22,22 @@ const LinkManager = ({ links, addLink }) => {
                     onChange={(e) => setUrl(e.target.value)}
                     className="flex-1 p-2 border rounded"
                 />
-                <button onClick={handleAddLink} className="p-2 bg-blue-500 text-white rounded">
+                <button
+                    onClick={handleAddLink}
+                    className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
                     Add
                 </button>
             </div>
             <ul className="mt-4">
                 {links.map(({ id, url }) => (
                     <li key={id} className="py-2 border-b">
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                        <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                        >
                             {url}
                         </a>
                     </li>

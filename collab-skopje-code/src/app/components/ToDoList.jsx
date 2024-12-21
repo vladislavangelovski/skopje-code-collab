@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 
 const ToDoList = ({ tasks, addTask, toggleTaskCompletion }) => {
@@ -22,7 +22,10 @@ const ToDoList = ({ tasks, addTask, toggleTaskCompletion }) => {
                     onChange={(e) => setTask(e.target.value)}
                     className="flex-1 p-2 border rounded"
                 />
-                <button onClick={handleAddTask} className="p-2 bg-green-500 text-white rounded">
+                <button
+                    onClick={handleAddTask}
+                    className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
                     Add
                 </button>
             </div>
