@@ -31,11 +31,18 @@ const Home = () => {
                     return null;
                 }
 
-                const { publicUrl } = supabase.storage
+                const { data: publicUrlData, error: urlError } = supabase.storage
                     .from("uploads")
                     .getPublicUrl(`uploaded-files/${file.name}`);
 
-                return { id: uuidv4(), name: file.name, url: publicUrl };
+                if (urlError) {
+                    console.error("Error generating public URL:", urlError.message);
+                    return null;
+                }
+
+                console.log("URL: " + publicUrlData.publicUrl);
+
+                return { id: uuidv4(), name: file.name, url: publicUrlData.publicUrl};
             })
         );
         setFiles((prev) => [...prev, ...uploadedFiles.filter(Boolean)]);
@@ -75,30 +82,41 @@ const Home = () => {
             // Add files
             if (files.length > 0) {
                 const fileData = files.map((file) => ({
+                    id: uuidv4(),
                     name: file.name,
                     url: file.url,
                     projectId,
+                    uploadedAt: new Date().toISOString()
                 }));
-                await supabase.from("file").insert(fileData);
+                const { error: fileError } = await supabase.from("file").insert(fileData);
+                if (fileError) console.error("File insert error:", fileError.message);
             }
 
             // Add links
             if (links.length > 0) {
                 const linkData = links.map((link) => ({
+                    id: uuidv4(),
                     url: link.url,
                     projectId,
+                    createdAt: new Date().toISOString(),
+
                 }));
-                await supabase.from("link").insert(linkData);
+                const { error: linkError } = await supabase.from("link").insert(linkData);
+                if (linkError) console.error("Link insert error:", linkError.message);
             }
 
             // Add tasks
             if (tasks.length > 0) {
                 const taskData = tasks.map((task) => ({
+                    id: uuidv4(),
                     task: task.task,
                     completed: task.completed,
                     projectId,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
                 }));
-                await supabase.from("task").insert(taskData);
+                const { error: taskError } = await supabase.from("task").insert(taskData);
+                if (taskError) console.error("Task insert error:", taskError.message);
             }
 
             alert("Project created successfully!");
