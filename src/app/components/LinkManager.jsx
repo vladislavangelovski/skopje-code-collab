@@ -1,15 +1,34 @@
-"use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import prisma from "@prisma/client";
 
-const LinkManager = ({ links, addLink }) => {
-    const [url, setUrl] = useState('');
+const LinkManager = ({ projectId }) => {
+    const [links, setLinks] = useState([]);
+    const [url, setUrl] = useState("");
 
-    const handleAddLink = () => {
-        if (url) {
-            addLink(url);
-            setUrl('');
-        }
+    const fetchLinks = async () => {
+        const fetchedLinks = await prisma.link.findMany({
+            where: { projectId },
+        });
+        setLinks(fetchedLinks);
     };
+
+    const addLink = async () => {
+        if (!url) return;
+
+        const newLink = await prisma.link.create({
+            data: {
+                url,
+                projectId,
+            },
+        });
+
+        setLinks((prev) => [...prev, newLink]);
+        setUrl("");
+    };
+
+    useEffect(() => {
+        fetchLinks();
+    }, []);
 
     return (
         <section className="mb-6">
@@ -23,8 +42,8 @@ const LinkManager = ({ links, addLink }) => {
                     className="flex-1 p-2 border rounded"
                 />
                 <button
-                    onClick={handleAddLink}
-                    className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    onClick={addLink}
+                    className="p-2 bg-blue-500 text-white rounded"
                 >
                     Add
                 </button>
